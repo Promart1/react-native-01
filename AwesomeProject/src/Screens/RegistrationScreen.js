@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {
+  Alert,
   Image,
-  ImageBackground,
   Keyboard,
   KeyboardAvoidingView,
   Pressable,
@@ -16,13 +16,26 @@ import addIcon from "../images/add.png";
 import deleteIcon from "../images/delete.png";
 
 const RegistrationScreen = () => {
-  const [userPhoto, _setUserPhoto] = useState(false);
+  const [userPhoto, setUserPhoto] = useState(false);
   const [passwordVisibility, setPasswordVisibility] = useState(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [login, setLogin] = useState("");
 
   const toggleShowPassword = () => {
     setPasswordVisibility(!passwordVisibility);
   };
 
+  const onRegistrate = () => {
+    Alert.alert(`Thank you! You are registered`);
+    setLogin("");
+    setEmail("");
+    setPassword("");
+  };
+
+  const onAddPhoto = () => {
+    setUserPhoto(!userPhoto);
+  };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
@@ -32,7 +45,7 @@ const RegistrationScreen = () => {
         <View style={styles.container}>
           <View style={styles.accountImage}>
             {userPhoto && <Image source={UserPhoto} style={styles.userPhoto} />}
-            <Pressable style={styles.addButton}>
+            <Pressable style={styles.addButton} onPress={onAddPhoto}>
               {!userPhoto && <Image source={addIcon} style={styles.icon} />}
               {userPhoto && <Image source={deleteIcon} style={styles.icon} />}
             </Pressable>
@@ -41,30 +54,33 @@ const RegistrationScreen = () => {
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
-              value="login"
+              value={login}
               placeholder="Логін"
               placeholderTextColor="#BDBDBD"
               inputMode="text"
+              onChangeText={setLogin}
             />
           </View>
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
-              value="email"
+              value={email}
               placeholder="Адреса електронної пошти"
               placeholderTextColor="#BDBDBD"
               inputMode="text"
+              onChangeText={setEmail}
             />
           </View>
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.inputPassword}
-              value="password"
+              value={password}
               placeholder="Пароль"
               placeholderTextColor="#BDBDBD"
               inputMode="text"
               textContentType="newPassword"
               secureTextEntry={passwordVisibility}
+              onChangeText={setPassword}
             />
             <Pressable onPress={toggleShowPassword}>
               {passwordVisibility && (
@@ -75,7 +91,7 @@ const RegistrationScreen = () => {
               )}
             </Pressable>
           </View>
-          <Pressable style={styles.registerBtn}>
+          <Pressable style={styles.registerBtn} onPress={onRegistrate}>
             <Text style={styles.registerBtnText}>Зареєструватися</Text>
           </Pressable>
           <Pressable>

@@ -11,8 +11,8 @@ const PostsScreen = () => {
         resizeMode="cover"
         style={styles.image}
       >
-        {/* <RegistrationScreen /> */}
-        <LoginScreen />
+        <RegistrationScreen />
+        {/* <LoginScreen /> */}
       </ImageBackground>
     </View>
   );

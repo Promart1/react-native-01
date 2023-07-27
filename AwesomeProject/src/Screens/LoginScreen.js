@@ -13,59 +13,71 @@ import { useState } from "react";
 
 export default function LoginScreen() {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const toggleShowPassword = () => {
     setPasswordVisibility(!passwordVisibility);
   };
 
+  const onLogin = () => {
+    Alert.alert(`Welcome, ${email}`);
+    setEmail("");
+    setPassword("");
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset="-200"
-      >
-        <View style={styles.container}>
-          <Text style={styles.title}>Увійти</Text>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              value="email"
-              placeholder="Адреса електронної пошти"
-              placeholderTextColor="#BDBDBD"
-              inputMode="email"
-            />
-          </View>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.inputPassword}
-              value="password"
-              placeholder="Пароль"
-              placeholderTextColor="#BDBDBD"
-              inputMode="text"
-              textContentType="newPassword"
-              secureTextEntry={passwordVisibility}
-            />
-            <Pressable onPress={toggleShowPassword}>
-              {passwordVisibility && (
-                <Text style={styles.showPasswordText}>Показати</Text>
-              )}
-              {!passwordVisibility && (
-                <Text style={styles.showPasswordText}>Сховати</Text>
-              )}
+      <View style={styles.container}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          keyboardVerticalOffset="-200"
+        >
+          <View style={styles.loginContainer}>
+            <Text style={styles.title}>Увійти</Text>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                value={email}
+                placeholder="Адреса електронної пошти"
+                placeholderTextColor="#BDBDBD"
+                inputMode="email"
+                onChangeText={setEmail}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.inputPassword}
+                value={password}
+                placeholder="Пароль"
+                placeholderTextColor="#BDBDBD"
+                inputMode="text"
+                textContentType="newPassword"
+                secureTextEntry={passwordVisibility}
+                onChangeText={setPassword}
+              />
+              <Pressable onPress={toggleShowPassword}>
+                {passwordVisibility && (
+                  <Text style={styles.showPasswordText}>Показати</Text>
+                )}
+                {!passwordVisibility && (
+                  <Text style={styles.showPasswordText}>Сховати</Text>
+                )}
+              </Pressable>
+            </View>
+
+            <Pressable style={styles.registerBtn} onPress={onLogin}>
+              <Text style={styles.registerBtnText}>Увійти</Text>
+            </Pressable>
+            <Pressable>
+              <Text style={styles.bottomText}>
+                Немає акаунту?{" "}
+                <Text style={styles.registrationText}>Зареєструватися</Text>
+              </Text>
             </Pressable>
           </View>
-
-          <Pressable style={styles.registerBtn}>
-            <Text style={styles.registerBtnText}>Увійти</Text>
-          </Pressable>
-          <Pressable onPress={() => Alert.alert("Text pressed")}>
-            <Text style={styles.bottomText}>
-              Немає акаунту?{" "}
-              <Text style={styles.registrationText}>Зареєструватися</Text>
-            </Text>
-          </Pressable>
-        </View>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </View>
     </TouchableWithoutFeedback>
   );
 }
@@ -77,10 +89,12 @@ const styles = StyleSheet.create({
     paddingRight: 16,
     paddingBottom: 111,
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
+  },
+  loginContainer: {
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
     fontFamily: "Roboto-Medium",
