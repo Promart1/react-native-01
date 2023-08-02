@@ -10,11 +10,14 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 export default function LoginScreen() {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigation = useNavigation();
 
   const toggleShowPassword = () => {
     setPasswordVisibility(!passwordVisibility);
@@ -22,6 +25,7 @@ export default function LoginScreen() {
 
   const onLogin = () => {
     Alert.alert(`Welcome, ${email}`);
+    navigation.navigate("Home");
     setEmail("");
     setPassword("");
   };
@@ -72,7 +76,12 @@ export default function LoginScreen() {
             <Pressable>
               <Text style={styles.bottomText}>
                 Немає акаунту?{" "}
-                <Text style={styles.registrationText}>Зареєструватися</Text>
+                <Text
+                  style={styles.registrationText}
+                  onPress={() => navigation.navigate("Registration")}
+                >
+                  Зареєструватися
+                </Text>
               </Text>
             </Pressable>
           </View>

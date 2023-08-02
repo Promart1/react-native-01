@@ -14,6 +14,7 @@ import {
 import UserPhoto from "../images/userPhoto.png";
 import addIcon from "../images/add.png";
 import deleteIcon from "../images/delete.png";
+import { useNavigation } from "@react-navigation/native";
 
 const RegistrationScreen = () => {
   const [userPhoto, setUserPhoto] = useState(false);
@@ -22,12 +23,15 @@ const RegistrationScreen = () => {
   const [password, setPassword] = useState("");
   const [login, setLogin] = useState("");
 
+  const navigation = useNavigation();
+
   const toggleShowPassword = () => {
     setPasswordVisibility(!passwordVisibility);
   };
 
   const onRegistrate = () => {
     Alert.alert(`Thank you! You are registered`);
+    navigation.navigate("Home", { login: login, email: email });
     setLogin("");
     setEmail("");
     setPassword("");
@@ -95,7 +99,12 @@ const RegistrationScreen = () => {
             <Text style={styles.registerBtnText}>Зареєструватися</Text>
           </Pressable>
           <Pressable>
-            <Text style={styles.text}>Вже є акаунт? Увійти</Text>
+            <Text
+              style={styles.text}
+              onPress={() => navigation.navigate("Login")}
+            >
+              Вже є акаунт? Увійти
+            </Text>
           </Pressable>
         </View>
       </KeyboardAvoidingView>
