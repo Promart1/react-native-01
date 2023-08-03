@@ -12,6 +12,8 @@ import UserPhoto from "../images/userPhoto.png";
 import Delete from "../images/delete.png";
 import Add from "../images/add.png";
 import LogOut from "../images/log-out.png";
+import posts from "../Data/List";
+import Post from "../Components/Post";
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
@@ -41,7 +43,11 @@ export default function ProfileScreen() {
         </Pressable>
         <Text style={styles.userName}>Natali Romanova</Text>
       </View>
-      <ScrollView style={styles.mainPostContainer}></ScrollView>
+      <ScrollView style={styles.mainPostContainer}>
+        {posts.map((post) => {
+          return <Post post={post} />;
+        })}
+      </ScrollView>
     </View>
   );
 }

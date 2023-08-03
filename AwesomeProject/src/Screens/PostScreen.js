@@ -1,5 +1,7 @@
 import { View, ScrollView, StyleSheet, Image, Text } from "react-native";
 import UserPhoto from "../images/userPhoto.png";
+import posts from "../Data/List";
+import Post from "../Components/Post";
 
 export default function PostScreen() {
   return (
@@ -11,7 +13,11 @@ export default function PostScreen() {
           <Text style={styles.userEmail}>email@example.com</Text>
         </View>
       </View>
-      <View style={styles.mainPostContainer}></View>
+      <View style={styles.mainPostContainer}>
+        {posts.map((post) => {
+          return <Post post={post} />;
+        })}
+      </View>
     </ScrollView>
   );
 }
@@ -44,7 +50,7 @@ const styles = StyleSheet.create({
   },
   userEmail: {
     color: "#212121",
-    fontFamily: "Roboto-Regular",
+    fontFamily: "normal",
     fontSize: 11,
   },
   mainPostContainer: {

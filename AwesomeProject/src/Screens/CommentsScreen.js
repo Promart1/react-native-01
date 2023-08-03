@@ -114,19 +114,19 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "#212121",
-    fontFamily: "Roboto-Regular",
+    fontFamily: "normal",
     fontSize: 13,
     marginBottom: 8,
   },
   date: {
     color: "#BDBDBD",
-    fontFamily: "Roboto-Regular",
+    fontFamily: "normal",
     fontSize: 10,
   },
   input: {
     width: "80%",
     color: "#212121",
-    fontStyle: "Roboto-Regular",
+    fontStyle: "normal",
     fontSize: 16,
   },
   inputContainer: {

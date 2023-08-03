@@ -166,13 +166,13 @@ const styles = StyleSheet.create({
   input: {
     width: "100%",
     height: "100%",
-    fontStyle: "Roboto-Regular",
+    fontStyle: "normal",
     fontSize: 16,
   },
   inputPassword: {
     width: "70%",
     height: "100%",
-    fontStyle: "Roboto-Regular",
+    fontStyle: "normal",
     fontSize: 16,
   },
   showPasswordText: {
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     padding: 16,
-    fontStyle: "Roboto-Regular",
+    fontStyle: "normal",
     fontSize: 16,
     backgroundColor: "#FF6C00",
     borderRadius: 100,
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "#1B4371",
-    fontStyle: "Roboto-Regular",
+    fontStyle: "normal",
     fontSize: 16,
     marginTop: 16,
   },

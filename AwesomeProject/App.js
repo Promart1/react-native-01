@@ -2,19 +2,20 @@ import "react-native-gesture-handler";
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import Login from "./src/Screens/LoginScreen";
-import Registration from "./src/Screens/RegistrationScreen";
 import Home from "./src/Screens/Home";
 import { ImageBackground, StyleSheet, View } from "react-native";
-import PostsScreen from "./src/Screens/PostScreen";
 import { useFonts } from "expo-font";
+import LoginScreen from "./src/Screens/LoginScreen";
+import RegistrationScreen from "./src/Screens/RegistrationScreen";
+import CommentScreen from "./src/Screens/CommentsScreen";
+import MapScreen from "./src/Screens/MapScreen";
 
 const MainStack = createStackNavigator();
 
 export default function App() {
   const [fontsLoaded] = useFonts({
     "Roboto-Medium": require("./src/Fonts/Roboto-Medium.ttf"),
-    "Roboto-Regular": require("./src/Fonts/Roboto-Regular.ttf"),
+    normal: require("./src/Fonts/Roboto-Regular.ttf"),
   });
   if (!fontsLoaded) {
     return null;
@@ -29,12 +30,56 @@ export default function App() {
       >
         <NavigationContainer>
           <MainStack.Navigator initialRouteName="Login">
-            <MainStack.Screen name="Registration" component={Registration} />
-            <MainStack.Screen name="Login" component={Login} />
+            <MainStack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{ headerShown: false }}
+            ></MainStack.Screen>
+            <MainStack.Screen
+              name="Registration"
+              component={RegistrationScreen}
+              options={{ headerShown: false }}
+            />
             <MainStack.Screen
               name="Home"
               component={Home}
-              options={{ title: "Start screen" }}
+              options={{ headerShown: false }}
+            />
+            <MainStack.Screen
+              name="CommentScreen"
+              component={CommentScreen}
+              options={{
+                title: "Коментарі",
+                headerStyle: {
+                  backgroundColor: "#ffffff",
+                  shadowColor: "rgba(0,0,0,0.3)",
+                  height: 88,
+                },
+                headerTintColor: "#212121",
+                headerTitleStyle: {
+                  marginLeft: 60,
+                  fontFamily: "Roboto-Medium",
+                  fontSize: 22,
+                },
+              }}
+            />
+            <MainStack.Screen
+              name="MapScreen"
+              component={MapScreen}
+              options={{
+                title: "Мапа",
+                headerStyle: {
+                  backgroundColor: "#ffffff",
+                  shadowColor: "rgba(0,0,0,0.3)",
+                  height: 88,
+                },
+                headerTintColor: "#212121",
+                headerTitleStyle: {
+                  marginLeft: 80,
+                  fontFamily: "Roboto-Medium",
+                  fontSize: 22,
+                },
+              }}
             />
           </MainStack.Navigator>
         </NavigationContainer>
@@ -45,7 +90,19 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
+    position: "relative",
     flex: 1,
   },
-  image: { flex: 1, justifyContent: "center" },
+  image: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+  },
+  navContainer: {
+    colors: {
+      background: "transparent",
+    },
+  },
 });
