@@ -8,14 +8,18 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import PostScreen from "./PostScreen";
 import CreatePostScreen from "./CreatePostsScreen";
 import ProfileScreen from "./ProfileScreen";
+import { useDispatch } from "react-redux";
+import { authSingOut } from "../redux/operations";
 
 const Tabs = createBottomTabNavigator();
 
 export default function Home() {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const onLogout = () => {
     navigation.navigate("Login");
+    dispatch(authSingOut());
   };
 
   const onReturn = () => {
@@ -32,7 +36,7 @@ export default function Home() {
     headerTintColor: "#212121",
     headerTitleStyle: {
       textAlign: "center",
-      fontFamily: "Roboto-Medium",
+      fontFamily: "medium",
       fontSize: 22,
     },
     headerRight: () => (
@@ -52,7 +56,7 @@ export default function Home() {
     headerTintColor: "#212121",
     headerTitleStyle: {
       marginLeft: 25,
-      fontFamily: "Roboto-Medium",
+      fontFamily: "medium",
       fontSize: 22,
     },
     tabBarHideOnKeyboard: "true",

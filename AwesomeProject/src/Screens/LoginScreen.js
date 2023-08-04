@@ -11,19 +11,29 @@ import {
 } from "react-native";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../config";
+import { logIn } from "../redux/authSlice";
+import { useEffect } from "react";
+import { getIsLoggedIn } from "../redux/selectors";
+import { authLogin } from "../redux/operations";
 
 export default function LoginScreen() {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const isLoggedIn = useSelector(getIsLoggedIn);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const toggleShowPassword = () => {
     setPasswordVisibility(!passwordVisibility);
   };
 
-  const onLogin = () => {
+  const onLogin = async () => {
+    dispatch(authLogin({ email, password }));
     Alert.alert(`Welcome, ${email}`);
     navigation.navigate("Home");
     setEmail("");
@@ -106,7 +116,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   title: {
-    fontFamily: "Roboto-Medium",
+    fontFamily: "medium",
     fontSize: 30,
     color: "#212121",
     marginBottom: 32,

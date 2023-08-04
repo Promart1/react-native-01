@@ -21,6 +21,10 @@ import * as Location from "expo-location";
 import CameraIcon from "../images/camera-icon.png";
 import posts from "../Data/List";
 import uuid from "react-native-uuid";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../../config";
+import { useDispatch } from "react-redux";
+import { addPost } from "../redux/postsSlice";
 
 export default function CreatePostScreen() {
   const [name, setName] = useState("");
@@ -31,21 +35,7 @@ export default function CreatePostScreen() {
   const [uriImg, setUriImg] = useState(null);
   const [location, setLocation] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
-
-  const handleSubmit = () => {
-    const post = {
-      id: uuid.v4(),
-      name: name,
-      place: place,
-      location: location,
-      comments: [],
-      likes: 0,
-      image: { uri: uriImg },
-    };
-    posts.push(post);
-    reset();
-    navigation.navigate("PostScreen");
-  };
+  const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
@@ -90,6 +80,19 @@ export default function CreatePostScreen() {
     setName("");
     setPlace("");
     setUriImg(null);
+  };
+
+  const handleSubmit = () => {
+    dispatch(
+      addPost({
+        name: name,
+        place: place,
+        location: location,
+        image: { uri: uriImg },
+      })
+    );
+    reset();
+    navigation.navigate("PostScreen");
   };
 
   return (
@@ -194,7 +197,7 @@ const styles = StyleSheet.create({
   input: {
     width: "100%",
     height: 50,
-    fontStyle: "Roboto-Medium",
+    fontStyle: "medium",
     fontSize: 16,
     color: "#212121",
   },

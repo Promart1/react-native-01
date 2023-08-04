@@ -14,15 +14,23 @@ import Add from "../images/add.png";
 import LogOut from "../images/log-out.png";
 import posts from "../Data/List";
 import Post from "../Components/Post";
+import { UserPostsComponent } from "../Components/UserPost";
+import { FlatList } from "react-native-gesture-handler";
+import { useDispatch, useSelector } from "react-redux";
+import { getPosts, getUser } from "../redux/selectors";
+import { authSingOut } from "../redux/operations";
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const user = useSelector(getUser);
+  const posts = useSelector(getPosts);
+  const [userPhoto, setUserPhoto] = useState(true);
 
   const onLogout = () => {
     navigation.navigate("Login");
+    dispatch(authSingOut());
   };
-
-  const [userPhoto, setUserPhoto] = useState(true);
 
   const onAddPhoto = () => {
     setUserPhoto(!userPhoto);
@@ -41,7 +49,7 @@ export default function ProfileScreen() {
         <Pressable style={styles.logOutBtn} onPress={onLogout}>
           <Image source={LogOut} style={styles.icon} />
         </Pressable>
-        <Text style={styles.userName}>Natali Romanova</Text>
+        <Text style={styles.userName}>{user.login}</Text>
       </View>
       <ScrollView style={styles.mainPostContainer}>
         {posts.map((post) => {
@@ -92,7 +100,7 @@ const styles = StyleSheet.create({
 
   logOutBtn: { position: "absolute", top: 22, left: 320 },
   userName: {
-    fontFamily: "Roboto-Medium",
+    fontFamily: "medium",
     fontSize: 30,
     color: "#212121",
   },

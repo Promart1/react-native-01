@@ -1,16 +1,49 @@
 import { View, ScrollView, StyleSheet, Image, Text } from "react-native";
 import UserPhoto from "../images/userPhoto.png";
 import posts from "../Data/List";
-import Post from "../Components/Post";
+import Post, { PostComponent } from "../Components/Post";
+import { useEffect } from "react";
+import { getDocs } from "firebase/firestore";
+import { auth, db } from "../../config";
+import { addPost } from "../redux/postsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useIsFocused } from "@react-navigation/native";
+import { useState } from "react";
+import { getPosts, getUser, selectPosts } from "../redux/selectors";
 
 export default function PostScreen() {
+  const dispatch = useDispatch();
+  const isFocused = useIsFocused();
+
+  const user = useSelector(getUser);
+  const posts = useSelector(getPosts);
+
+  useEffect(() => {
+    if (isFocused) {
+      (async () => {
+        try {
+          const snapshot = await getDocs(collection(db, "posts"));
+
+          const postsData = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            data: doc.data(),
+          }));
+          dispatch(addPost(postsData));
+        } catch (error) {
+          console.log(error);
+          throw error;
+        }
+      })();
+    }
+  }, [isFocused]);
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.accountView}>
         <Image source={UserPhoto} style={styles.userPhoto} />
         <View style={styles.textView}>
-          <Text style={styles.userLogin}>Natali Romanova</Text>
-          <Text style={styles.userEmail}>email@example.com</Text>
+          <Text style={styles.userLogin}>{user.login}</Text>
+          <Text style={styles.userEmail}>{user.email}</Text>
         </View>
       </View>
       <View style={styles.mainPostContainer}>
@@ -45,7 +78,7 @@ const styles = StyleSheet.create({
   },
   userLogin: {
     color: "#212121",
-    fontFamily: "Roboto-Medium",
+    fontFamily: "medium",
     fontSize: 13,
   },
   userEmail: {

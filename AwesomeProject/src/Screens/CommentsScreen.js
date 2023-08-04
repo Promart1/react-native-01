@@ -14,8 +14,12 @@ import {
 } from "react-native";
 import Send from "../images/Send.png";
 import uuid from "react-native-uuid";
+import { db } from "../../config";
+import { doc, updateDoc, getDocs, collection } from "firebase/firestore";
+import { useEffect } from "react";
 
 export default function CommentScreen() {
+  const [inputValue, setInputValue] = useState("");
   const {
     params: { postComments, postImg },
   } = useRoute();
@@ -23,24 +27,49 @@ export default function CommentScreen() {
   const [image, _setImage] = useState(postImg);
   const [newComment, setNewComment] = useState(null);
 
-  const onAddComment = () => {
-    const date = new Date().getDate();
-    const month = new Date().getMonth() + 1;
-    const year = new Date().getFullYear();
-    const hours = new Date().getHours();
-    const min = new Date().getMinutes();
-    const currentDate =
-      date + " " + month + " " + year + " " + hours + ":" + min;
-    const comment = {
-      id: uuid.v4(),
-      avatar: require("../images/userPhoto.png"),
-      text: newComment,
-      date: currentDate,
-    };
+  const route = useRoute();
+  const way = route.params?.way;
+  const id = route.params?.id;
+  const currentDate = Date.now();
 
-    console.log(comment);
-    setNewComment("");
+  const updateDataInFirestore = async (collectionName, docId) => {
+    try {
+      const ref = doc(db, collectionName, docId);
+
+      await updateDoc(ref, {
+        comments: [
+          ...comments,
+          { comment: inputValue, currentDate, id: uuid.v4() },
+        ],
+      });
+      console.log("document updated");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setInputValue("");
+      Keyboard.dismiss();
+    }
   };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const snapshot = await getDocs(collection(db, "posts"));
+
+        const postsData = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          data: doc.data(),
+        }));
+
+        const comments = postsData.find((post) => post.id === id).data.comments;
+
+        setComments(comments);
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+    })();
+  }, [inputValue]);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -70,7 +99,10 @@ export default function CommentScreen() {
               placeholderTextColor="#BDBDBD"
               inputMode="text"
             />
-            <Pressable style={styles.button} onPress={onAddComment}>
+            <Pressable
+              style={styles.button}
+              onPress={() => updateDataInFirestore("posts", id)}
+            >
               <Image source={Send} />
             </Pressable>
           </View>

@@ -15,6 +15,15 @@ import UserPhoto from "../images/userPhoto.png";
 import addIcon from "../images/add.png";
 import deleteIcon from "../images/delete.png";
 import { useNavigation } from "@react-navigation/native";
+import {
+  createUserWithEmailAndPassword,
+  fetchSignInMethodsForEmail,
+  updateProfile,
+} from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { auth } from "../../config";
+import { createUser } from "../redux/authSlice";
+import { authRegister } from "../redux/operations";
 
 const RegistrationScreen = () => {
   const [userPhoto, setUserPhoto] = useState(false);
@@ -24,14 +33,16 @@ const RegistrationScreen = () => {
   const [login, setLogin] = useState("");
 
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const toggleShowPassword = () => {
     setPasswordVisibility(!passwordVisibility);
   };
 
   const onRegistrate = () => {
-    Alert.alert(`Thank you! You are registered`);
-    navigation.navigate("Home", { login: login, email: email });
+    dispatch(authRegister({ login, email, password }));
+    Alert.alert(`${login}, thank you for registration`);
+    navigation.navigate("Home");
     setLogin("");
     setEmail("");
     setPassword("");
@@ -145,7 +156,7 @@ const styles = StyleSheet.create({
     height: 25,
   },
   title: {
-    fontFamily: "Roboto-Medium",
+    fontFamily: "medium",
     fontSize: 30,
     color: "#212121",
     marginBottom: 32,
@@ -159,7 +170,7 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: "#F6F6F6",
     marginBottom: 16,
-    borederWidth: 1,
+    borderWidth: 1,
     borderColor: "#E8E8E8",
     borderRadius: 8,
   },
